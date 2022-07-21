@@ -1,3 +1,12 @@
+# Getting Started
+
+# Integrate Entity Framework
+- Install `Npgsql.EntityFrameworkCore.PostgreSQL` `v3.0.0`
+- Update `ConnectionStrings.AspNetCoreIdentityDb` key in `AspNetCoreIdentity.appsettings.json` with pgsql connection details
+- Run following commands from `AspNetCoreIdentity` folder
+	- <kbd>dotnet ef migrations add initial_migration<kbd>
+	- <kbd>dotnet ef database update</kbd>
+
 # ASP.NET Core Identity Series
 
 ## The most complete guide for ASP.NET Core Identity 
