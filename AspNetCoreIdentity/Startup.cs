@@ -43,20 +43,27 @@ namespace AspNetCoreIdentity
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
-            bool useInMemoryProvider = bool.Parse(Configuration["InMemoryProvider"]);
-            services.AddDbContext<IdentityDbContext>(options =>
-            {
-                if (!useInMemoryProvider)
-                {
-                    options.UseSqlServer(Configuration.GetConnectionString("AspNetCoreIdentityDb"),
-                        optionsBuilder =>
-                        optionsBuilder.MigrationsAssembly(typeof(Startup).Assembly.GetName().Name));
-                }
-                else
-                {
-                    options.UseInMemoryDatabase("AspNetCoreIdentityDb");
-                }
-            });
+            services.AddEntityFrameworkNpgsql().AddDbContext<IdentityDbContext>(
+                opt => opt.UseNpgsql(
+                    Configuration.GetConnectionString("AspNetCoreIdentityDb"),
+                    optionsBuilder => optionsBuilder.MigrationsAssembly(typeof(Startup).Assembly.GetName().Name)
+                )
+            );
+
+            //bool useInMemoryProvider = bool.Parse(Configuration["InMemoryProvider"]);
+            //services.AddDbContext<IdentityDbContext>(options =>
+            //{
+            //    if (!useInMemoryProvider)
+            //    {
+            //        options.UseSqlServer(Configuration.GetConnectionString("AspNetCoreIdentityDb"),
+            //            optionsBuilder =>
+            //            optionsBuilder.MigrationsAssembly(typeof(Startup).Assembly.GetName().Name));
+            //    }
+            //    else
+            //    {
+            //        options.UseInMemoryDatabase("AspNetCoreIdentityDb");
+            //    }
+            //});
 
 
             services.AddIdentity<IdentityUser, IdentityRole>(config => { config.SignIn.RequireConfirmedEmail = true; })
