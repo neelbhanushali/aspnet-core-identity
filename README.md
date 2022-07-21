@@ -1,11 +1,24 @@
 # Getting Started
 
 # Integrate Entity Framework
-- Install `Npgsql.EntityFrameworkCore.PostgreSQL` `v3.0.0`
+- Install `Npgsql.EntityFrameworkCore.PostgreSQL` `v3.0.0` in `AspNetCoreIdentity`
 - Update `ConnectionStrings.AspNetCoreIdentityDb` key in `AspNetCoreIdentity.appsettings.json` with pgsql connection details
 - Run following commands from `AspNetCoreIdentity` folder
 	- <kbd>dotnet ef migrations add initial_migration<kbd>
 	- <kbd>dotnet ef database update</kbd>
+
+# Deep Dive in authorization
+
+# OAuth 2.0, OpenID Connect & IdentityServer
+- Install `Npgsql.EntityFrameworkCore.PostgreSQL` `v3.0.0` in `IdentityServer`
+- Update `ConnectionStrings.IdentityServerConnection` key in `IdentityServer.appsettings.json` with pgsql connection details
+- Run following commands from `IdentityServer` folder
+    - <kbd>dotnet ef migrations add initial_migration --context ApplicationDbContext</kbd>
+    - <kbd>dotnet ef migrations add initial_migration --context PersistedGrantDbContext</kbd>
+    - <kbd>dotnet ef migrations add initial_migration1 --context ConfigurationDbContext</kbd>
+    - <kbd>dotnet ef database update --context ApplicationDbContext</kbd>
+    - <kbd>dotnet ef database update --context PersistedGrantDbContext</kbd>
+    - <kbd>dotnet ef database update --context ConfigurationDbContext</kbd>
 
 # ASP.NET Core Identity Series
 

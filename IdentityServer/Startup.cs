@@ -27,23 +27,30 @@ namespace IdentityServer
             bool useInMemoryStores = bool.Parse(Configuration["UseInMemoryStores"]);
             var connectionString = Configuration.GetConnectionString("IdentityServerConnection");
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                if (useInMemoryStores)
-                {
-                    options.UseInMemoryDatabase("IdentityServerDb");
-                }
-                else
-                {
-                    options.UseSqlServer(connectionString);
-                }
-            });
+            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(
+                opt => opt.UseNpgsql(
+                    Configuration.GetConnectionString("IdentityServerConnection"),
+                    optionsBuilder => optionsBuilder.MigrationsAssembly(typeof(Startup).Assembly.GetName().Name)
+                )
+            );
+
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //{
+            //    if (useInMemoryStores)
+            //    {
+            //        options.UseInMemoryDatabase("IdentityServerDb");
+            //    }
+            //    else
+            //    {
+            //        options.UseSqlServer(connectionString);
+            //    }
+            //});
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2); ;
+            services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0); ;
 
             services.Configure<IISOptions>(iis =>
             {
@@ -69,7 +76,7 @@ namespace IdentityServer
                             }
                             else
                             {
-                                opt.UseSqlServer(connectionString,
+                                opt.UseNpgsql(connectionString,
                                     optionsBuilder =>
                                         optionsBuilder.MigrationsAssembly(typeof(Startup).Assembly.GetName().Name));
                             }
@@ -86,7 +93,7 @@ namespace IdentityServer
                             }
                             else
                             {
-                                opt.UseSqlServer(connectionString,
+                                opt.UseNpgsql(connectionString,
                                     optionsBuilder =>
                                         optionsBuilder.MigrationsAssembly(typeof(Startup).Assembly.GetName().Name));
                             }

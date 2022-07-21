@@ -237,4 +237,4 @@ _Pvt_Extensions
 .fake/
 
 # Entity Framework Migrations
-/Migrations/
+# /Migrations/
