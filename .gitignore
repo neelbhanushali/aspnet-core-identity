@@ -263,3 +263,6 @@ __pycache__/
 .vscode/
 
 IdentityServer/Data/Migrations
+
+IdentityServer/.config
+IdentityServer/Properties/PublishProfiles

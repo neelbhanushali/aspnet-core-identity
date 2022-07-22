@@ -19,6 +19,8 @@
     - <kbd>dotnet ef database update --context ApplicationDbContext</kbd>
     - <kbd>dotnet ef database update --context PersistedGrantDbContext</kbd>
     - <kbd>dotnet ef database update --context ConfigurationDbContext</kbd>
+- Pending Items
+    - `throw new Exception("need to configure key material");` is commented in `IdentityServer/Startup.cs`
 
 # ASP.NET Core Identity Series
 
