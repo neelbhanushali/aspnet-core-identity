@@ -1,0 +1,284 @@
+{
+	"info": {
+		"_postman_id": "43393fa2-c487-4287-9496-26d75bbe0676",
+		"name": "Identity Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authorization Code",
+			"item": [
+				{
+					"name": "Get Authorization Code (Front Channel)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/connect/authorize?client_id=AspNetCoreIdentity&redirect_uri=http://localhost:5000&response_type=code&scope=openid profile SocialAPI&state=be1916720a2e4585998ae504d43a3c7c&code_challenge={{code_challenge}}&code_challenge_method={{code_challenge_method}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"connect",
+								"authorize"
+							],
+							"query": [
+								{
+									"key": "client_id",
+									"value": "AspNetCoreIdentity"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://localhost:5000"
+								},
+								{
+									"key": "response_type",
+									"value": "code"
+								},
+								{
+									"key": "scope",
+									"value": "openid profile SocialAPI"
+								},
+								{
+									"key": "state",
+									"value": "be1916720a2e4585998ae504d43a3c7c"
+								},
+								{
+									"key": "code_challenge",
+									"value": "{{code_challenge}}"
+								},
+								{
+									"key": "code_challenge_method",
+									"value": "{{code_challenge_method}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Access Token (Back Channel)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "AspNetCoreIdentity",
+									"type": "default"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://localhost:5000",
+									"type": "default"
+								},
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "default"
+								},
+								{
+									"key": "code",
+									"value": "RoDsooktYnTg5nL1RXF3jYvgD46YE2-GYrk59BJLJ9Q",
+									"type": "default"
+								},
+								{
+									"key": "code_verifier",
+									"value": "{{code_verifier}}",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/connect/token",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Implicit",
+			"item": [
+				{
+					"name": "Get Access Token (Front Channel)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/connect/authorize?client_id=AspNetCoreIdentityImplicit&redirect_uri=http://localhost:5000&response_type=token&scope=openid profile SocialAPI&state=be1916720a2e4585998ae504d43a3c7c&code_challenge={{code_challenge}}&code_challenge_method={{code_challenge_method}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"connect",
+								"authorize"
+							],
+							"query": [
+								{
+									"key": "client_id",
+									"value": "AspNetCoreIdentityImplicit"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://localhost:5000"
+								},
+								{
+									"key": "response_type",
+									"value": "token"
+								},
+								{
+									"key": "scope",
+									"value": "openid profile SocialAPI"
+								},
+								{
+									"key": "state",
+									"value": "be1916720a2e4585998ae504d43a3c7c"
+								},
+								{
+									"key": "code_challenge",
+									"value": "{{code_challenge}}"
+								},
+								{
+									"key": "code_challenge_method",
+									"value": "{{code_challenge_method}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Discovery",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/.well-known/openid-configuration",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						".well-known",
+						"openid-configuration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Another Application Protected API Hit",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host1}}/api/contacts",
+					"host": [
+						"{{host1}}"
+					],
+					"path": [
+						"api",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/connect/userinfo",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"connect",
+						"userinfo"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "https://localhost:5005",
+			"type": "default"
+		},
+		{
+			"key": "code_verifier",
+			"value": "ad55ea0f077249ac99e190f576babb7bb9d14dcb229f4c1bb2fe1d0f87dc93d601374a833e4640f0b035c55a87d27a4d"
+		},
+		{
+			"key": "code_challenge",
+			"value": "pxUY7Dldu3UtT1BM4YGNLEeK45tweexRqbTk79J611o"
+		},
+		{
+			"key": "code_challenge_method",
+			"value": "S256"
+		},
+		{
+			"key": "access_token",
+			"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImNiZDM0ODMzOThhNDBjZjc3N2U0OTBjZDIyNDRkZWIzIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2NTg2OTAwNTcsImV4cCI6MTY1ODY5MzY1NywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwNSIsImF1ZCI6IlNvY2lhbEFQSSIsImNsaWVudF9pZCI6IkFzcE5ldENvcmVJZGVudGl0eSIsInN1YiI6IjJhMTIwNTIwLTRmOGQtNDYzZC1iMmZhLTk3MWMzMTEwNGJlOCIsImF1dGhfdGltZSI6MTY1ODY5MDAzMSwiaWRwIjoibG9jYWwiLCJzY29wZSI6WyJwcm9maWxlIiwib3BlbmlkIiwiU29jaWFsQVBJIl0sImFtciI6WyJwd2QiXX0.kwnhM0fobdcZtAEcLw_M3mxQ48PyEmU2R6NL14MoYFC6LCBLxwx-lgdZMqQfNRcnn4FVdRtBEjN-YdVYlTzxCiSEadj2QmbS9Gf-V_xHGQUAtAClKNkq2ZcFFk_pK_CrsAsL9qM2lIwUulJQRhbxCzurCpofkW1WdLvu9wDbw6TU6c77HyTCXTjvCHW4I_J60mawTUEyw_F6rpVVaK_Q29W0YP7yigywIs3_7NpzykybJCvpGkFfwKJWAiCwNrmjMG_hMebOAmbRg9Z8d5fyz6CzpeZrE4xDwoU7JosT75V9vVj72e17rucQM9fEvqwwimudCMYSjkJpFqsissCx3Q"
+		},
+		{
+			"key": "host1",
+			"value": "https://localhost:5010"
+		}
+	]
+}

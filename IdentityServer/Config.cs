@@ -37,6 +37,25 @@ namespace IdentityServer
                         IdentityServerConstants.StandardScopes.Profile,
                         "SocialAPI"
                     }
+                },
+                new Client
+                {
+                    ClientId = "AspNetCoreIdentityImplicit",
+                    ClientName = "AspNetCoreIdentity Implicit Client",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+
+                    RedirectUris =           { "http://localhost:5000" },
+                    PostLogoutRedirectUris = { "http://localhost:5000" },
+                    AllowedCorsOrigins =     { "http://localhost:5000" },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "SocialAPI"
+                    }
                 }
             };
         }

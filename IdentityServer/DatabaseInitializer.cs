@@ -17,9 +17,9 @@ namespace IdentityServer
         {
             if (!useInMemoryStores)
             {
-                //provider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
-                //provider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-                //provider.GetRequiredService<ConfigurationDbContext>().Database.Migrate();
+                provider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+                provider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                provider.GetRequiredService<ConfigurationDbContext>().Database.Migrate();
             }
             InitializeIdentityServer(provider);
 

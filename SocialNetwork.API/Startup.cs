@@ -26,7 +26,7 @@ namespace SocialNetwork.API
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://localhost:5005";
+                    options.Authority = "https://localhost:5005";
                     options.RequireHttpsMetadata = false;
 
                     options.Audience = "SocialAPI";
