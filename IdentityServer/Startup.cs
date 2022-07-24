@@ -64,6 +64,7 @@ namespace IdentityServer
                         options.Events.RaiseInformationEvents = true;
                         options.Events.RaiseFailureEvents = true;
                         options.Events.RaiseSuccessEvents = true;
+                        options.PublicOrigin = Configuration.GetValue<string>("Domain");
                     })
                     // this adds the config data from DB (clients, resources)
                     .AddConfigurationStore(options =>

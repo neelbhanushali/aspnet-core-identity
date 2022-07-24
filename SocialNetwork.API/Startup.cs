@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace SocialNetwork.API
 {
@@ -26,7 +27,7 @@ namespace SocialNetwork.API
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "https://localhost:5005";
+                    options.Authority = Configuration.GetValue<string>("IDSDomain");
                     options.RequireHttpsMetadata = false;
 
                     options.Audience = "SocialAPI";
@@ -51,6 +52,7 @@ namespace SocialNetwork.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                IdentityModelEventSource.ShowPII = true;
             }
 
             app.UseCors("default");

@@ -1,3 +1,42 @@
+# How to deploy on Linux
+- Create a service file (<your-app-name>.service) as follows. (Text between angular brackets is to be added by you)
+```
+[Unit]
+Description=<YOUR APP DESCRIPTION>
+[Service]
+WorkingDirectory=<ABSOLUTE PATH TO YOUR PROJECT BUILD DIRECTORY>
+ExecStart=/snap/bin/dotnet <ABSOLUTE PATH TO YOUR PROJECT BUILD DIRECTORY>/<PROJECT NAME>.dll --urls=https://localhost:<PORT OF YOUR CHOICE>
+Restart=always
+RestartSec=10
+SyslogIdentifier=dotnet-demo
+User=<LINUX USER THAT OWNS THE WORKING DIRECTORY>
+Environment=ASPNETCORE_ENVIRONMENT=Production
+[Install]
+WantedBy=multi-user.target
+```
+- Make sure you have appsettings.Production.json in Build Directory
+- Create a symlink for your service file in `/etc/systemd/system` directory
+<kbd>sudo ln -s /absolute/path/to/&lt;your-app-name&gt;.service /etc/systemd/system/&lt;your-app-name&gt;.service</kbd>
+- Create nginx conf file for your site in `/etc/nginx/conf.d`
+```
+server {
+  server_name <DOMAIN OF YOUR CHOICE>;
+
+  location / {
+      proxy_pass https://localhost:<PORT THAT YOUR SITE IS RUNNING ON>;
+  }
+}
+```
+- <kbd>sudo nginx -t</kbd> => If success => <kbd>sudo systemctl restart nginx</kbd>
+- You should be able to open your site on given domain
+- Obtain SSL for your domain
+<kbd>sudo certbot --nginx -d &lt;DOMAIN THAT YOUR SITE IS RUNNING ON&gt;</kbd>
+
+# Pending Items
+- `throw new Exception("need to configure key material");` is commented in `IdentityServer/Startup.cs`
+
+<hr>
+
 # Getting Started
 
 # Integrate Entity Framework
@@ -21,6 +60,8 @@
     - <kbd>dotnet ef database update --context ConfigurationDbContext</kbd>
 - Pending Items
     - `throw new Exception("need to configure key material");` is commented in `IdentityServer/Startup.cs`
+
+<hr>
 
 # ASP.NET Core Identity Series
 
