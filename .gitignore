@@ -266,3 +266,5 @@ IdentityServer/Data/Migrations
 
 IdentityServer/.config
 IdentityServer/Properties/PublishProfiles
+SocialNetwork.API/.config
+SocialNetwork.API/Properties/PublishProfiles
