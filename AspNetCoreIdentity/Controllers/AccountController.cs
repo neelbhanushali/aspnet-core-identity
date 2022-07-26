@@ -248,7 +248,7 @@ namespace AspNetCoreIdentity.Controllers
             var result = await _signInManager.ExternalLoginSignInAsync(loginProvider, providerKey,
                 isPersistent: false, bypassTwoFactor: true);
             return new LocalRedirectResult($"/?message={providerDisplayName} has been added successfully");
-        }
+        }   
 
         [HttpPost]
         [Authorize]

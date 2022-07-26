@@ -1,5 +1,6 @@
 ﻿using System;
 using IdentityServer.Data;
+using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -64,7 +65,7 @@ namespace IdentityServer
                         options.Events.RaiseInformationEvents = true;
                         options.Events.RaiseFailureEvents = true;
                         options.Events.RaiseSuccessEvents = true;
-                        options.PublicOrigin = Configuration.GetValue<string>("Domain");
+                        //options.PublicOrigin = Configuration.GetValue<string>("Domain");
                     })
                     // this adds the config data from DB (clients, resources)
                     .AddConfigurationStore(options =>
@@ -114,7 +115,14 @@ namespace IdentityServer
                 //throw new Exception("need to configure key material");
             }
 
-            services.AddAuthentication();
+            services.AddAuthentication()
+                .AddGoogle("Google", options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+                    options.ClientId = "863035508847-vi4dc6n8200gtib19ggtss09ufsd7ugh.apps.googleusercontent.com";
+                    options.ClientSecret = "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";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
