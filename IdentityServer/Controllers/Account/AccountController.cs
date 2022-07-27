@@ -214,6 +214,11 @@ namespace IdentityServerHost.Quickstart.UI
             {
                 // delete local authentication cookie
                 await HttpContext.SignOutAsync();
+                // Sauce: https://github.com/IdentityServer/IdentityServer4/issues/3153#issuecomment-480825683
+                // Clear the existing external cookie to ensure a clean login process
+                await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+                // Clear the existing external cookie to ensure a clean login process
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
                 // raise the logout event
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
