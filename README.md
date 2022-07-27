@@ -17,16 +17,33 @@ WantedBy=multi-user.target
 - Make sure you have appsettings.Production.json in Build Directory
 - Create a symlink for your service file in `/etc/systemd/system` directory
 <kbd>sudo ln -s /absolute/path/to/&lt;your-app-name&gt;.service /etc/systemd/system/&lt;your-app-name&gt;.service</kbd>
-- Create nginx conf file for your site in `/etc/nginx/conf.d`
+- Make sure following code is added to the start of `Configure` method in your `Startup.cs` file
+```
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+    {
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+    });
+```
+- Create nginx conf file for your site as follows `/etc/nginx/conf.d` named (<your-app-name>.conf)
 ```
 server {
   server_name <DOMAIN OF YOUR CHOICE>;
 
   location / {
       proxy_pass https://localhost:<PORT THAT YOUR SITE IS RUNNING ON>;
+      proxy_http_version 1.1;
+      proxy_set_header   Upgrade $http_upgrade;
+      proxy_set_header   Connection keep-alive;
+      proxy_set_header   Host $host;
+      proxy_cache_bypass $http_upgrade;
+      proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+
   }
 }
 ```
+- Create a symlink of your nginx conf file in `/etc/nginx/conf.d` directory
+<kbd>sudo ln -s /absolute/path/to/&lt;your-app-name&gt;.conf /etc/nginx/conf.d/&lt;your-app-name&gt;.conf</kbd>
 - <kbd>sudo nginx -t</kbd> => If success => <kbd>sudo systemctl restart nginx</kbd>
 - You should be able to open your site on given domain
 - Obtain SSL for your domain
