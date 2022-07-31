@@ -100,7 +100,7 @@ namespace IdentityServerHost.Quickstart.UI
             }
 
             // lookup our user and external provider info
-            var (user, provider, providerUserId, claims) = await FindUserFromExternalProvider(result);
+            var (user, provider, providerUserId, claims, association) = await FindUserFromExternalProvider(result);
             if (user == null)
             {
                 // this might be where you might initiate a custom workflow for user registration
@@ -112,6 +112,19 @@ namespace IdentityServerHost.Quickstart.UI
             {
                 // user found in our database
                 // so apply logic of association
+                if(association == null)
+                {
+                    var userNameClaim = result.Principal.FindFirst(ClaimTypes.Name);
+                    await _userManager.AddLoginAsync(user,
+                       new ExternalLoginInfo(null, provider, providerUserId,
+                           userNameClaim.Value));
+
+                    if(!user.EmailConfirmed)
+                    {
+                        user.EmailConfirmed = true;
+                        await _userManager.UpdateAsync(user);
+                    }
+                }
             }
 
             // this allows us to collect any additional claims or properties
@@ -154,7 +167,7 @@ namespace IdentityServerHost.Quickstart.UI
             return Redirect(returnUrl);
         }
 
-        private async Task<(IdentityUser user,string provider, string providerUserId, IEnumerable<Claim> claims)> FindUserFromExternalProvider(AuthenticateResult result)
+        private async Task<(IdentityUser user,string provider, string providerUserId, IEnumerable<Claim> claims, IdentityUser association)> FindUserFromExternalProvider(AuthenticateResult result)
         {
             var externalUser = result.Principal;
 
@@ -177,8 +190,9 @@ namespace IdentityServerHost.Quickstart.UI
 
             // find external user
             var user = await _userManager.FindByEmailAsync(userEmailClaim.Value);
+            var association = await _userManager.FindByLoginAsync(provider, providerUserId);
 
-            return (user, provider, providerUserId, claims);
+            return (user, provider, providerUserId, claims, association);
         }
 
         private async Task<IdentityUser>  AutoProvisionUser(string provider, string providerUserId, AuthenticateResult result)
